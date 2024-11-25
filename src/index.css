@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-image {
+  background-image: url("./images/good fruits desktop.png"),
+    url("./images/vector-bg.png");
+  background-position: bottom right, bottom right;
+  background-size: contain, 50%;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.bg-image-home {
+  background-image: url("./images/good frunze verticale sidebar desktop.png");
+  background-position: right;
+  background-size: 70%;
+  background-repeat: no-repeat;
+}
+
+.screen-max-width {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  position: relative;
+  max-width: 1280px;
+}
+
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}
+
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  .bg-image {
+    background-image: url("./images/good fruits tablet.png"),
+      url("./images/vector-bg.png");
+    background-size: 60%, 60%;
+  }
+
+  .bg-image-home {
+    background-image: url("./images/good frunze sidebar tableta.png");
+    background-position: bottom right;
+    background-size: 60%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .bg-image {
+    background-image: none;
+  }
+
+  .bg-image-home {
+    background-image: none;
+  }
+}

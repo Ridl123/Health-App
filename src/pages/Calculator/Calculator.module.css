@@ -1,0 +1,28 @@
+.customDropdown {
+  position: relative;
+  display: inline-block;
+
+}
+
+.dropdownMenu {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdownMenu li {
+  padding: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+.dropdownMenu li:hover {
+  background: #f0f0f0;
+}
