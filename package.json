@@ -2,7 +2,7 @@
   "name": "health",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ridl123.github.io/Health-App/",
+  "homepage": "https://ridl123.github.io/SlimMom/",
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.2.8",
