@@ -17,30 +17,27 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Calculator = () => {
-  const navigate = useNavigate(); // Hook to navigate between routes
-  const dispatch = useDispatch(); // Redux hook to dispatch actions
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const user = useSelector(selectUserCurrent); // Select current user data from Redux store
-  const name = useSelector(selectUserName); // Select the user's name from Redux store
+  const user = useSelector(selectUserCurrent);
+  const name = useSelector(selectUserName);
 
-  const [isOpen, setIsOpen] = useState(false); // State for controlling the visibility of the dropdown menu
-  const [isModalOpen, setModalOpen] = useState(false); // State for controlling the visibility of the burger menu modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const [selectedValue, setSelectedValue] = useState("Blood type *"); // State for storing the selected blood type
+  const [selectedValue, setSelectedValue] = useState("Blood type *");
 
-  // Toggle function for opening and closing the blood type dropdown
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  // Handle the blood type selection and update the form field value
   const handleSelect = (value, setFieldValue) => {
     setSelectedValue(value);
-    setFieldValue("blood", value); // Set the selected blood type in the form state
-    setIsOpen(false); // Close the dropdown menu
+    setFieldValue("blood", value);
+    setIsOpen(false);
   };
 
-  // Validation schema for the form fields using Yup
   const validationSchema = Yup.object({
     height: Yup.number().required("Height is required"),
     desWeight: Yup.number().required("Desired weight is required"),
@@ -51,7 +48,6 @@ const Calculator = () => {
 
   return (
     <>
-      {/* Formik form for handling user inputs */}
       <Formik
         initialValues={{
           height: "",
@@ -60,37 +56,30 @@ const Calculator = () => {
           blood: "",
           weight: "",
         }}
-        validationSchema={validationSchema} // Attach validation schema
+        validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          // Handle form submission
           const { height, desWeight, age, blood } = values;
 
-          // Calculate BMR using the given formula
           const BMR = 10 * desWeight + 6.25 * height - 5 * age + 5;
-          // Calculate daily calorie intake by multiplying BMR with an activity factor (1.55)
           const calories = parseInt((BMR * 1.55).toFixed(0));
 
-          // Prepare the data to be sent to the Redux store
           const submitValues = {
             calories: calories,
             height: height,
             age: age,
             bloodType: blood,
           };
-
-          // Dispatch action to update user data in Redux store
           console.log(user._id, submitValues);
           dispatch(
             updateCurrentUser({ accountId: user._id, data: submitValues })
           );
-          setSelectedValue("Blood type *"); // Reset the blood type dropdown
-          resetForm(); // Reset the form after submission
+          setSelectedValue("Blood type *");
+          resetForm();
         }}
       >
         {({ isSubmitting, setFieldValue }) => (
           <section className="screen-max-width w-full h-[100vh] overflow-auto flex tablet:flex-col phone:flex-col">
             <div className="w-3/5 flex flex-col pl-6 pr-6 tablet:pr-0 phone:pr-0 pt-12 gap-20 tablet:w-full tablet:pt-2 tablet:pl-0 tablet:gap-14 phone:w-full phone:pl-0 phone:pt-2 phone:gap-8">
-              {/* Navigation Bar with logo and logout option */}
               <nav className="flex items-baseline gap-4 tablet:justify-between tablet:pb-2 tablet:items-center tablet:border-b-2 tablet:border-slate-300 phone:justify-between phone:pb-2 phone:items-center phone:border-b-2 phone:border-slate-300">
                 <img
                   src={logo}
@@ -102,40 +91,57 @@ const Calculator = () => {
                 <div className="flex gap-6">
                   <div className="hidden tablet:flex items-center gap-3">
                     <p className="text-sm font-semibold text-slate-500">
-                      {name} {/* Display the user's name */}
+                      {name}
                     </p>
                     <div className="bg-slate-300 h-6 w-[2px]"></div>
                     <button
-                      onClick={() => dispatch(logout())} // Logout button dispatching the logout action
+                      onClick={() => dispatch(logout())}
                       type="button"
                       className="text-sm font-semibold text-slate-400"
                     >
                       Exit
                     </button>
                   </div>
-                  {/* Hamburger menu or close icon depending on the modal state */}
                   {isModalOpen ? (
                     <IoClose
-                      onClick={() => setModalOpen(false)} // Close modal on click
+                      onClick={() => setModalOpen(false)}
                       className="hidden tablet:flex phone:flex w-6 h-6 flex-shrink-0 tablet:mr-6 phone:mr-4 text-slate-600"
                     />
                   ) : (
                     <RxHamburgerMenu
-                      onClick={() => setModalOpen(true)} // Open modal on click
+                      onClick={() => setModalOpen(true)}
                       className="hidden tablet:flex phone:flex w-6 h-6 flex-shrink-0 tablet:mr-6 phone:mr-4 text-slate-600"
                     />
                   )}
                 </div>
+                <div className="flex items-center gap-7 tablet:hidden phone:hidden">
+                  <span className="bg-slate-300 h-8 w-[2px] tablet:hidden phone:hidden"></span>
+                  <div className="flex flex-row gap-6 h-[17px] tablet:pr-6 phone:pr-4 tablet:hidden phone:hidden pt-1">
+                    <button
+                      onClick={() => {
+                        navigate("/diary");
+                      }}
+                      className="text-slate-300 text-sm font-bold hover:text-slate-500 focus:text-slate-500 transition-all duration-300"
+                    >
+                      DIARY
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate("/calculator");
+                      }}
+                      className="text-sm font-bold text-slate-500"
+                    >
+                      CALCULATOR
+                    </button>
+                  </div>
+                </div>
               </nav>
-
-              {/* Form for calculating calorie intake */}
               <div className="flex flex-col gap-12 tablet:pl-6 phone:pl-5 tablet:pr-6">
                 <h2 className="text-slate-800 text-3xl font-bold w-4/5 tablet:w-10/12 phone:w-10/12 phone:text-lg">
                   Calculate your daily calorie intake right now
                 </h2>
                 <Form className="flex flex-col">
                   <div className="flex flex-wrap gap-8  w-full phone:w-full">
-                    {/* Form fields for height, weight, age, and blood type */}
                     <div className="relative">
                       <Field
                         id="height"
@@ -147,10 +153,9 @@ const Calculator = () => {
                       <ErrorMessage
                         name="height"
                         component="div"
-                        className="absolute text-red-500" // Error message for invalid input
+                        className="absolute text-red-500"
                       />
                     </div>
-                    {/* Other form fields similar to the height field */}
                     <div className="relative">
                       <Field
                         id="desWeight"
@@ -179,17 +184,15 @@ const Calculator = () => {
                         className="absolute text-red-500"
                       />
                     </div>
-                    {/* Blood type dropdown */}
                     <div className="relative">
                       <div
                         className={`${css.customDropdown} w-60 bg-transparent border-b-2 outline-none pb-2 text-slate-400 font-bold focus:text-slate-600 focus:border-slate-600 hover:text-slate-600 hover:border-slate-600`}
                       >
                         <div className="w-full h-full" onClick={handleToggle}>
-                          {selectedValue} {/* Display selected blood type */}
+                          {selectedValue}
                         </div>
                         {isOpen && (
                           <ul className={css.dropdownMenu}>
-                            {/* Options for selecting blood type */}
                             <li
                               onClick={() => handleSelect("O", setFieldValue)}
                             >
@@ -219,26 +222,36 @@ const Calculator = () => {
                         className="absolute text-red-500"
                       />
                     </div>
+                    <div className="relative">
+                      <Field
+                        id="weight"
+                        name="weight"
+                        type="number"
+                        placeholder="Current weight (in kg) *"
+                        className="w-60 bg-transparent border-b-2 outline-none pb-2 text-slate-400 font-bold focus:text-slate-600 focus:border-slate-600 placeholder:focus:text-slate-600 hover:text-slate-600 hover:border-slate-600"
+                      />
+                      <ErrorMessage
+                        name="weight"
+                        component="div"
+                        className="absolute text-red-500"
+                      />
+                    </div>
                   </div>
-                  {/* Submit button */}
                   <button
-                    type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-slate-700 text-white py-2 rounded-md hover:bg-slate-800"
+                    type="submit"
+                    className="bg-orange-500 text-white px-6 py-3 rounded-full w-52 mt-10 mb-12 hover:bg-orange-600 hover:scale-105 transition-all duration-300"
                   >
-                    Calculate
+                    Start losing weight
                   </button>
                 </Form>
               </div>
             </div>
-
-            {/* Sidebar with user statistics */}
-            <div className="tablet:w-[30%] phone:w-[30%]">
-              <UserSidebar />
-            </div>
+            <UserSidebar></UserSidebar>
           </section>
         )}
       </Formik>
+      {isModalOpen && <BurgerModal />}
     </>
   );
 };

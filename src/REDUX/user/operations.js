@@ -2,7 +2,9 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { selectToken } from "../auth/selectors";
 
-axios.defaults.baseURL = "http://localhost:3000/health/";
+const API_URL_SSL = "https://13.48.177.15:3000/health/";
+
+axios.defaults.baseURL = API_URL_SSL || "http://localhost:3000/health/";
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
