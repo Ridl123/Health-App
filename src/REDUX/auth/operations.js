@@ -10,7 +10,7 @@ axios.defaults.baseURL = API_URL_SSL || "http://localhost:3000/health/";
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-
+//ceva nu e bine
 export const register = createAsyncThunk(
   "auth/register",
   async (user, thunkApi) => {
