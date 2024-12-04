@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+        // Redirect to the correct route in a single-page application
+        (function () {
+            var target = window.location.pathname.replace(/\/$/, '');
+            window.location.replace(window.location.origin + '/' + target);
+        })();
+    </script>
+</head>
+
+<body>
+    Redirecting...
+</body>
+
+</html>
